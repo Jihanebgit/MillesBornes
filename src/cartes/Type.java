@@ -2,5 +2,33 @@ package cartes;
 
 public enum Type {
 
-	FEU, ESSENCE, CREVAISON, ACCIDENT
+	FEU("Feu rouge","Feu vert", "Prioritaire"), 
+	ESSENCE("Panne","Bidon d'essence","Citerne"), 
+	CREVAISON("Crevaison", "Roue de secour","Increvable"), 
+	ACCIDENT("Accident", "Réparation","As du volant" );
+	
+	private String attaque;
+	private String parade;
+	private String botte;
+	
+	private Type(String attaque, String parade, String botte) {
+		this.attaque = attaque;
+		this.parade = parade;
+		this.botte = botte;
+	}
+
+	public String getAttaque() {
+		return attaque;
+	}
+
+	public String getParade() {
+		return parade;
+	}
+
+	public String getBotte() {
+		return botte;
+	}
+	
+	
 }
+
