@@ -1,61 +1,96 @@
 package testsFonctionnels;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 import cartes.Botte;
 import cartes.Carte;
 import cartes.JeuDeCartes;
+import cartes.Type;
 import jeu.Sabot;
 
 public class TestSabot {
-	JeuDeCartes jeu = new JeuDeCartes();
-	Sabot sabot = new Sabot(jeu.donnerCartes());
 
-	// 4.2.a
-	public void questionA() {
+    public static void main(String[] args) {
 
-//		while (!sabot.estVide()) {
-//			Carte carte = sabot.piocher();
-//			System.out.println("Je pioche " + carte);
-//		}
-//		Console :
-//		Je pioche Accident
-//		Je pioche Accident
-//		Je pioche Accident
-//		Je pioche R�paration
-//		Je pioche R�paration
-//		Je pioche R�paration
-//		Je pioche As du volant
-	}
+        JeuDeCartes jeu = new JeuDeCartes();
 
-	// 4.2.b
-	public void questionB() {
-//		for (Iterator<Carte> iterator = sabot.iterator(); iterator.hasNext();) {
-//			System.out.println("Je pioche " + iterator.next());
-//			iterator.remove();
-//		}
-	}
+        
+        System.out.println("TEST PIOCHER");
 
-	// 4.2.c
-	public void questionC() {
-//		Carte cartePiochee = sabot.piocher();
-//		System.out.println("Je pioche " + cartePiochee);
-//		for (Iterator<Carte> iterator = sabot.iterator(); iterator.hasNext();) {
-//			Carte carte = iterator.next();
-//			System.out.println("Je pioche " + carte);
-//			iterator.remove();
-//			Carte cartePiochee = sabot.piocher();
-//			sabot.ajouterCarte(new Botte(cartes.Type.ACCIDENT));
-//		}
-//		Iterator<Carte> iterator = sabot.iterator();
-//		System.out.println("\nLa pioche contient encore des cartes ? " + iterator.hasNext());
-	}
+        Sabot sabot = new Sabot(jeu.donnerCartes());
 
-	public static void main(String[] args) {
-		TestSabot testPioche = new TestSabot();
-//		testPioche.questionA();
-//		testPioche.questionB();
-//		testPioche.questionC();
-	}
+        while (!sabot.estVide()) {
+            System.out.println("je pioche " + sabot.piocher());
+        }
 
+
+        
+        System.out.println();
+        System.out.println("TEST ITERATEUR ET REMOVE ");
+
+        sabot = new Sabot(jeu.donnerCartes());
+
+        Iterator<Carte> iterator = sabot.iterator();
+
+        while (iterator.hasNext()) {
+
+            Carte carte = iterator.next();
+
+            System.out.println("je pioche " + carte);
+
+            iterator.remove();
+        }
+
+
+        
+        System.out.println();
+        System.out.println("TEST CONCURRENT MODIFICATION");
+
+        sabot = new Sabot(jeu.donnerCartes());
+
+        iterator = sabot.iterator();
+
+        iterator.next();
+
+        sabot.piocher();
+
+        try {
+
+            iterator.next();
+
+        } catch (ConcurrentModificationException e) {
+
+            System.out.println(
+                "ConcurrentModificationException correctement levee."
+            );
+        }
+
+
+        
+        System.out.println();
+        System.out.println("TEST AJOUT PENDANT ITERATION");
+
+        sabot = new Sabot(jeu.donnerCartes());
+
+        
+        sabot.piocher();
+
+        iterator = sabot.iterator();
+
+        iterator.next();
+
+        sabot.ajouterCarte(new Botte(Type.ACCIDENT));
+
+        try {
+
+            iterator.next();
+
+        } catch (ConcurrentModificationException e) {
+
+            System.out.println(
+                "ConcurrentModificationException correctement levee."
+            );
+        }
+    }
 }
