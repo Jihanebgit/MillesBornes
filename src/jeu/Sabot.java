@@ -10,11 +10,12 @@ public class Sabot implements Iterable<Carte> {
 
     private Carte[] cartes;
     private int nbCartes;
-    private int nombreOperations = 0;
+    private int nombreOperations;
 
     public Sabot(Carte[] cartes) {
         this.cartes = cartes;
         this.nbCartes = cartes.length;
+        this.nombreOperations = 0;
     }
 
     public boolean estVide() {
@@ -22,16 +23,11 @@ public class Sabot implements Iterable<Carte> {
     }
 
     public void ajouterCarte(Carte carte) {
-
-        if (nbCartes >= cartes.length) {
-            throw new IllegalStateException();
-        }
-
         cartes[nbCartes] = carte;
         nbCartes++;
         nombreOperations++;
     }
-    
+
     public Carte piocher() {
 
         Iterator<Carte> iterator = iterator();
@@ -41,6 +37,7 @@ public class Sabot implements Iterable<Carte> {
         }
 
         Carte carte = iterator.next();
+
         iterator.remove();
 
         return carte;
@@ -94,6 +91,7 @@ public class Sabot implements Iterable<Carte> {
 
             nbCartes--;
             indiceIterateur--;
+
             nextEffectue = false;
 
             nombreOperations++;
